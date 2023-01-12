@@ -1,23 +1,23 @@
 using MassTransit;
 using StateMachineSample.API.Consumers;
-using StateMachineSample.Events;
+using StateMachineSample.API.Settings;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var messageBrokerQueueSettings = builder.Configuration.GetSection("MessageBroker:QueueSettings").Get<MessageBrokerQueueSettings>(); 
 
 builder.Services.AddMassTransit(x =>
 {
     x.UsingRabbitMq((context,cfg) =>
     {
-        cfg.Host("localhost", "/", h => {
-            h.Username("guest");
-            h.Password("guest");
+        cfg.Host(messageBrokerQueueSettings.HostName, messageBrokerQueueSettings.VirtualHost, h => {
+            h.Username(messageBrokerQueueSettings.UserName);
+            h.Password(messageBrokerQueueSettings.Password);
         });
 
         cfg.ConfigureEndpoints(context);
@@ -55,7 +55,6 @@ builder.Services.AddMassTransit(x =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
