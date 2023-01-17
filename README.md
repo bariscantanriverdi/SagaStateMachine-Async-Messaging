@@ -25,6 +25,10 @@ MongoDB: https://www.mongodb.com/try/download/community
 
 -----------
 
+You can check the article regarding this project, If you are interested in theory part of it.
+
+https://medium.com/adessoturkey/saga-state-machine-masstransit-automatonymous-request-response-pattern-10f14603964
+
 Happy Coding...
 
 ----------------------------------------------------------------------------------------------------------------------------------------
